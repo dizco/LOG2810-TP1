@@ -14,7 +14,7 @@ public:
 	string getIdentifiant() const;
 
 private:
-	vector<Arc*> voisins_;
+	//vector<Arc*> voisins_;
 	string identifiant_;
 	string carburant_;
 
