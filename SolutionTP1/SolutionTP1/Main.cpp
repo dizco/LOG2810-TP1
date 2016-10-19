@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 
+#include "Graphe.h"
+
 using namespace std;
 
 enum OptionsDisponibles { Invalide, CaracteristiquesVehicule, MettreAJourCarte, DeterminerChemin, Quitter };
@@ -9,6 +11,7 @@ OptionsDisponibles lireOptionChoisie();
 
 int main() 
 {
+	Graphe graphe;
 	OptionsDisponibles option;
 	do {
 		afficherMenu();
@@ -17,13 +20,18 @@ int main()
 			case Invalide:
 				cout << "Option invalide. Veuillez réessayer." << endl;
 				break;
-			case CaracteristiquesVehicule:
+			case CaracteristiquesVehicule:  //a
 				cout << "Choisir caractéristiques du véhicule." << endl;
 				break;
-			case MettreAJourCarte:
-				cout << "Mettre à jour la carte." << endl;
+			case MettreAJourCarte: //b
+				{
+					string fileName = "";
+					cout << "Entrez le nom du nouveau fichier : ";
+					cin >> fileName;
+					graphe.creerGraphe(fileName);
+				}
 				break;
-			case DeterminerChemin:
+			case DeterminerChemin: //c
 				cout << "Déterminer le plus court chemin.";
 				break;
 		}
@@ -43,7 +51,7 @@ OptionsDisponibles lireOptionChoisie() {
 	std::string optionChoisie = "";
 	cin >> optionChoisie;
 	
-	//TODO: prendre (a) comme paramatre plutot que a
+	//TODO: prendre (a) comme paramètre plutot que a
 	if (optionChoisie.length() != 1 || !(optionChoisie[0] >= 'a' && optionChoisie[0] <= 'd')) {
 		return OptionsDisponibles::Invalide;
 	}

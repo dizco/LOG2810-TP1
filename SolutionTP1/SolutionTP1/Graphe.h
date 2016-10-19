@@ -1,5 +1,9 @@
 #pragma once
 #include <string>
+#include <vector>
+
+#include "Sommet.h"
+#include "Arc.h"
 
 class Graphe
 {
@@ -13,5 +17,8 @@ public:
 	void plusCourtChemin();
 
 private:
+	Sommet* trouverSommet(string identifiant) const;
 
+	vector<Sommet*> sommets_;
+	vector<Arc*> arcs_;
 };
