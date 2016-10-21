@@ -152,7 +152,6 @@
     <ClInclude Include="Arc.h" />
     <ClInclude Include="Graphe.h" />
     <ClInclude Include="Sommet.h" />
-    <ClInclude Include="TypeDeCarburant.h" />
     <ClInclude Include="Vehicule.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

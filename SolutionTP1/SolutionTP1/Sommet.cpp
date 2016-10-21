@@ -16,3 +16,23 @@ Sommet::~Sommet()
 string Sommet::getIdentifiant() const {
 	return identifiant_;
 }
+
+string Sommet::getType() const {
+	return carburant_;
+}
+
+void Sommet::addVoisin(Sommet* sommetVoisin, int distance) {
+	voisins_.push_back(make_pair(sommetVoisin, distance));
+}
+
+string Sommet::printVoisins() const {
+	string result = "(";
+	bool isFirst = true;
+	for (auto i = voisins_.begin(); i != voisins_.end(); i++) {
+		if (!isFirst)
+			result += ", ";
+		result += (*i).first->getIdentifiant();
+		isFirst = false;
+	}
+	return result += ")";
+}

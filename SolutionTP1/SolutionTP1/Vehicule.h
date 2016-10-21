@@ -10,8 +10,19 @@ public:
 	Vehicule();
 	~Vehicule();
 
+	void setAutonomieActuelle(int autonomie);
+	void setAutonomieMax(int autonomie);
+	void setCarburant(string carburant);
+
+	int getAutonomieActuelle() const;
+	int getAutonomieMax() const;
+	string getCarburant() const;
+
+	friend ostream& operator<< (ostream& stream, const Vehicule& vehicule);
+
 private:
-	int autonomie_;
+	int autonomieActuelle_;
+	int autonomieMax_;
 	string carburant_;
 };
 

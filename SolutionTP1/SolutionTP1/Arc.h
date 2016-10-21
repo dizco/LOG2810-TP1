@@ -1,4 +1,4 @@
-#pragma once
+/*#pragma once
 
 #include "Sommet.h"
 
@@ -14,5 +14,5 @@ private:
 	Sommet* sommet1_;
 	Sommet* sommet2_;
 
-};
+};*/
 

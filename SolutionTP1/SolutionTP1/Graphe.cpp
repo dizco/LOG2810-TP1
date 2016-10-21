@@ -58,14 +58,13 @@ void Graphe::creerGraphe(string fileName) {
 		string ligne2;
 		getline(fichier, ligne2); 
 		vector<string> listeDarcs = split(ligne2, ';');
-		arcs_.clear();
 		for (auto i = listeDarcs.begin(); i != listeDarcs.end(); i++) {
 			vector<string> arc = split(*i, ',');
-			Sommet* sommet1 = trouverSommet(arc[0]);
-			Sommet* sommet2 = trouverSommet(arc[1]);
+			Sommet* sommetOrigine = trouverSommet(arc[0]);
+			Sommet* sommetDestination = trouverSommet(arc[1]);
 			int distance = stoi(arc[2]);
-			Arc* newArc = new Arc(sommet1, sommet2, distance);
-			arcs_.push_back(newArc);
+
+			sommetOrigine->addVoisin(sommetDestination, distance);
 		}
 
 		fichier.close();
@@ -75,14 +74,20 @@ void Graphe::creerGraphe(string fileName) {
 
 
 void Graphe::lireGraphe() {
-
+	for (auto i = sommets_.begin(); i != sommets_.end(); i++) {
+		cout << "(Station " << (*i)->getIdentifiant() << ", " << (*i)->getType() << ", "
+			<< (*i)->printVoisins()
+			<< ")" << endl;
+	}
 }
 
 void Graphe::extractionGraphe() {
+	//extraire uniquement les chemins possibles avec l'autonomie actuelle du véhicule
 
 }
 
-void Graphe::plusCourtChemin() {
+void Graphe::plusCourtChemin(Sommet* sommetDepart, Sommet* sommetDestination) {
+	//détermine le plus court chemin entre 2 sommets
 
 }
 

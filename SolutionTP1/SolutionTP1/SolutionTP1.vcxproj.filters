@@ -44,8 +44,5 @@
     <ClInclude Include="Vehicule.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TypeDeCarburant.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>
