@@ -60,8 +60,16 @@ void Graphe::creerGraphe(string fileName) {
 		vector<string> listeDarcs = split(ligne2, ';');
 		for (auto i = listeDarcs.begin(); i != listeDarcs.end(); i++) {
 			vector<string> arc = split(*i, ',');
-			Sommet* sommetOrigine = trouverSommet(arc[0]);
-			Sommet* sommetDestination = trouverSommet(arc[1]);
+
+			Sommet* sommetOrigine;
+			Sommet* sommetDestination;
+			try {
+				sommetOrigine = trouverSommet(arc[0]);
+				sommetDestination = trouverSommet(arc[1]);
+			}
+			catch (const invalid_argument& e) {
+				cout << "Erreur lors de la lecture du fichier de graphe. Un sommet inexistant est utilise." << endl;
+			}
 			int distance = stoi(arc[2]);
 
 			sommetOrigine->addVoisin(sommetDestination, distance);
@@ -82,14 +90,50 @@ void Graphe::lireGraphe() {
 }
 
 void Graphe::extractionGraphe() {
-	//extraire uniquement les chemins possibles avec l'autonomie actuelle du véhicule
+	//extraire uniquement les chemins possibles avec l'autonomie actuelle (ou max?) du véhicule
 
 }
 
-void Graphe::plusCourtChemin(Sommet* sommetDepart, Sommet* sommetDestination) {
+void Graphe::plusCourtChemin(Sommet* sommetDepart, Sommet* sommetDestination, Vehicule& vehicule) {
 	//détermine le plus court chemin entre 2 sommets
+	vector<Trajet> result;
+	vector<pair<Sommet*, int>> voisinsDuDepart = sommetDepart->getVoisinsPossibles(vehicule.getAutonomieActuelle());
+	for (auto i = voisinsDuDepart.begin(); i != voisinsDuDepart.end(); i++) {
+		int autonomieRestante = vehicule.getAutonomieActuelle() - (*i).second;
+		if ((*i).first->getIdentifiant() == sommetDestination->getIdentifiant()) {
+			Trajet trajet;
+			trajet.ajouterSommet((*i).first, (*i).second);
+			result.push_back(trajet);
+		}
+		else if ((*i).first->getVoisinsPossibles(autonomieRestante).size() > 0) {
+			//TODO: Dig continuellement tous les niveaux
+			vector<pair<Sommet*, int>> voisinsDuNiveau = (*i).first->getVoisinsPossibles(autonomieRestante);
+			for (auto j = voisinsDuNiveau.begin(); j != voisinsDuNiveau.end(); j++) {
+				int autonomieRestante2 = autonomieRestante - (*j).second;
+				if ((*j).first->getIdentifiant() == sommetDestination->getIdentifiant()) {
+					Trajet trajet;
+					trajet.ajouterSommet((*j).first, (*j).second);
+					result.push_back(trajet);
+				}
+			}
+		}
 
+	}
+
+	for (auto i = result.begin(); i != result.end(); i++) {
+		vector<Sommet*> sommets = (*i).getSommets();
+		string listeDeSommets = "";
+		bool isFirst = true;
+		for (auto j = sommets.begin(); j != sommets.end(); j++) {
+			if (!isFirst)
+				listeDeSommets += ", ";
+			listeDeSommets = (*j)->getIdentifiant();
+		}
+		cout << "Trajet : " << listeDeSommets << ". Distance : " << (*i).getDistance() << endl;
+	}
 }
+
+
 
 Sommet* Graphe::trouverSommet(string identifiant) const {
 	for (auto i = sommets_.begin(); i != sommets_.end(); i++) {
@@ -97,4 +141,5 @@ Sommet* Graphe::trouverSommet(string identifiant) const {
 			return *i;
 		}
 	}
+	throw invalid_argument("Impossible de trouver le sommet.");
 }

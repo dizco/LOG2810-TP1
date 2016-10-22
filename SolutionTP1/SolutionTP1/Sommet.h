@@ -18,6 +18,9 @@ public:
 	void addVoisin(Sommet* sommetVoisin, int distance);
 	string printVoisins() const;
 
+	vector<pair<Sommet*, int>> getVoisins() const;
+	vector<pair<Sommet*, int>> getVoisinsPossibles(int distance) const;
+
 private:
 	vector<pair<Sommet*,int>> voisins_;
 	string identifiant_;

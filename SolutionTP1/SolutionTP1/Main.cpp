@@ -10,6 +10,7 @@ enum OptionsDisponibles { Invalide, CaracteristiquesVehicule, MettreAJourCarte, 
 void afficherMenu();
 OptionsDisponibles lireOptionChoisie();
 Vehicule demanderCaracteristiquesDuVehicule();
+void executerPlusCourtChemin(Graphe& graphe, Vehicule& vehicule);
 
 int main()
 {
@@ -35,7 +36,7 @@ int main()
 			}
 			break;
 			case DeterminerChemin: //c
-				cout << "Determiner le plus court chemin.";
+				executerPlusCourtChemin(graphe, vehicule);
 				break;
 		}
 	} while (option != Quitter);
@@ -123,4 +124,25 @@ Vehicule demanderCaracteristiquesDuVehicule() {
 	cout << "Vehicule enregistre : " << vehicule << endl;
 
 	return vehicule;
+}
+
+void executerPlusCourtChemin(Graphe& graphe, Vehicule& vehicule) {
+	string idSommetDepart = "";
+	cout << "Identifiant du sommet de depart : ";
+	cin >> idSommetDepart;
+	string idSommetDestination = "";
+	cout << endl << "Identifiant du sommet de destination : ";
+	cin >> idSommetDestination;
+
+	Sommet* sommetDepart;
+	Sommet* sommetDestination;
+	try {
+		sommetDepart = graphe.trouverSommet(idSommetDepart);
+		sommetDestination = graphe.trouverSommet(idSommetDestination);
+
+		graphe.plusCourtChemin(sommetDepart, sommetDestination, vehicule);
+	}
+	catch (const invalid_argument& e) {
+		cout << "Ce sommet n'existe pas. Veuillez reessayer." << endl;
+	}
 }

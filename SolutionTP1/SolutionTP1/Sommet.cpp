@@ -36,3 +36,18 @@ string Sommet::printVoisins() const {
 	}
 	return result += ")";
 }
+
+vector<pair<Sommet*, int>> Sommet::getVoisins() const {
+	return voisins_;
+}
+
+vector<pair<Sommet*, int>> Sommet::getVoisinsPossibles(int distance) const {
+	vector<pair<Sommet*, int>> voisinsDisponibles;
+	for (auto i = voisins_.begin(); i != voisins_.end(); i++) {
+		if ((*i).second <= distance) {
+			voisinsDisponibles.push_back(*i);
+		}
+	}
+
+	return voisinsDisponibles;
+}
