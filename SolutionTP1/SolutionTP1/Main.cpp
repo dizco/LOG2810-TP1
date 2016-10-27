@@ -32,7 +32,7 @@ int main()
 				string fileName = "";
 				cout << "Entrez le nom du nouveau fichier : ";
 				cin >> fileName;
-				graphe.creerGraphe(fileName);
+				graphe.creerGraphe(fileName, true);
 			}
 			break;
 			case DeterminerChemin: //c
@@ -41,19 +41,19 @@ int main()
 			case Testing:
 				vehicule = Vehicule();
 				vehicule.setCarburant("essence");
-				vehicule.setAutonomieMax(400);
-				vehicule.setAutonomieActuelle(100);
+				vehicule.setAutonomieMax(5);
+				vehicule.setAutonomieActuelle(5);
 
-				graphe.creerGraphe("graphe1.txt");
+				graphe.creerGraphe("graphe1.txt", true);
 				executerPlusCourtChemin(graphe, vehicule);
 				break;
 			case AutomaticTests:
 				vehicule = Vehicule();
 				vehicule.setCarburant("essence");
-				vehicule.setAutonomieMax(400);
-				vehicule.setAutonomieActuelle(100);
+				vehicule.setAutonomieMax(20);
+				vehicule.setAutonomieActuelle(2);
 
-				graphe.creerGraphe("graphe1.txt");
+				graphe.creerGraphe("graphe1.txt", true);
 				break;
 		}
 	} while (option != Quitter);
@@ -62,7 +62,7 @@ int main()
 }
 
 void afficherMenu() {
-	cout << "(a) Demander les caracteristiques du vehicule." << endl
+	cout << endl << "(a) Demander les caracteristiques du vehicule." << endl
 		<< "(b) Mettre a jour la carte." << endl
 		<< "(c) Determiner le plus court chemin." << endl
 		<< "(d) Quitter." << endl;
@@ -126,11 +126,8 @@ Vehicule demanderCaracteristiquesDuVehicule() {
 			autonomieMaxValide = true;
 			vehicule.setAutonomieMax(autonomieMax);
 		}
-		else if(autonomieMax<0) {
-			cout << "L'autonomie du vehicule doit etre superieure a 0" << endl;
-		}
 		else {
-			cout << "L'autonomie du véhicule doit etre inférieure à 999 999 km" << endl;
+			cout << "L'autonomie du vehicule doit etre superieure a 0" << endl;
 		}
 	}
 
@@ -144,7 +141,7 @@ Vehicule demanderCaracteristiquesDuVehicule() {
 			vehicule.setAutonomieActuelle(autonomieRestante);
 		}
 		else {
-			cout << "L'autonomie restante du vehicule doit etre superieure a 0, et inferieure ou egale a l'autonomie maximale. "<< endl;
+			cout << "L'autonomie restante du vehicule doit etre superieure a 0, et inferieure ou egale a l'autonomie maximale." << endl;
 		}
 	}
 

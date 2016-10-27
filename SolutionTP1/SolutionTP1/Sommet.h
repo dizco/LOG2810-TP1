@@ -19,6 +19,7 @@ public:
 	string printVoisins() const;
 	bool peutRecharger(string type) const;
 
+	void setVoisins(const vector<pair<Sommet*, int>>& vecteur);
 	vector<pair<Sommet*, int>> getVoisins() const;
 	vector<pair<Sommet*, int>> getVoisinsPossibles(int distance) const;
 

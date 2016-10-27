@@ -43,6 +43,10 @@ bool Sommet::peutRecharger(string type) const {
 		|| (carburant_ == "electrique" && (type == "hybride" || type == "electrique")));
 }
 
+void Sommet::setVoisins(const vector<pair<Sommet*, int>>& vecteur) {
+	voisins_ = vecteur;
+}
+
 vector<pair<Sommet*, int>> Sommet::getVoisins() const {
 	return voisins_;
 }

@@ -1,0 +1,2 @@
+A,essence;B,essence;C,essence;
+A,C,2;A,B,3;C,B,2;

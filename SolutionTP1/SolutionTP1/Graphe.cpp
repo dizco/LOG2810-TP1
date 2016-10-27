@@ -38,13 +38,14 @@ std::vector<std::string> split(const std::string &s, char delim) {
 	return elems;
 }
 
-void Graphe::creerGraphe(string fileName) {
+void Graphe::creerGraphe(string fileName, bool afficher) {
 	ifstream fichier(fileName, ios::in);
 
 	if (fichier.fail()) {
 		cerr << "L'ouverture du fichier a échoué." << endl;		
 	}
 	else {
+		fileName_ = fileName;
 		string ligne1;
 		getline(fichier, ligne1);
 
@@ -78,7 +79,8 @@ void Graphe::creerGraphe(string fileName) {
 		}
 
 		fichier.close();
-		lireGraphe();
+		if (afficher)
+			lireGraphe();
 	}
 }
 
@@ -94,10 +96,8 @@ void Graphe::lireGraphe() {
 vector<Sommet*> Graphe::extractionGraphe(Sommet* sommetDepart, const Vehicule& vehicule) const {
 	//extraire uniquement les chemins possibles avec l'autonomie actuelle (ou max?) du véhicule
 
-	vector<Sommet*> newVector;
-	extraireVoisinsDeSommet(sommetDepart, vehicule);
-	//newVector.push_back
-	//TODO:
+	vector<pair<Sommet*, int>> voisinExtrait = extraireVoisinsDeSommet(sommetDepart, vehicule);
+	sommetDepart->setVoisins(voisinExtrait);
 	return sommets_;
 }
 
@@ -105,22 +105,22 @@ vector<pair<Sommet*, int>> Graphe::extraireVoisinsDeSommet(Sommet* sommet, Vehic
 	if (sommet->peutRecharger(vehicule.getCarburant()))
 		vehicule.recharger();
 
-	vector<pair<Sommet*, int>> voisinsPossibles = sommet->getVoisinsPossibles(vehicule.getAutonomieActuelle());
+	int autonomieActuelle = vehicule.getAutonomieActuelle();
+	vector<pair<Sommet*, int>> voisinsPossibles = sommet->getVoisinsPossibles(autonomieActuelle);
 	for (auto i = voisinsPossibles.begin(); i != voisinsPossibles.end(); i++) {
-		//(*i)
+		vehicule.setAutonomieActuelle(autonomieActuelle - (*i).second);
+		
+		vector<pair<Sommet*, int>> voisinExtrait = extraireVoisinsDeSommet((*i).first, vehicule);
+		(*i).first->setVoisins(voisinExtrait);
 	}
-	/*
-	pour chaque voisin
-		on appelle récursivement extraireSommets, qui retourne sa liste de voisins
-
-	*/
+	return voisinsPossibles;
 }
 
 void Graphe::plusCourtChemin(Sommet* sommetDepart, Sommet* sommetDestination, Vehicule& vehicule) {
 	//détermine le plus court chemin entre 2 sommets
 
-	vector<Sommet*> sommetsDisponibles = extractionGraphe();
-	vector<pair<Sommet*, pair<int, Sommet*>>> sommetsEtPoids;
+	vector<Sommet*> sommetsDisponibles = extractionGraphe(sommetDepart, vehicule);
+	vector<pair<Sommet*, pair<int, Sommet*>>> sommetsEtPoids; //<pair<sommetActuel, pair<poidsDuSommetActuel, sommetPrécédent>>
 	vector<Sommet*> trajet;
 
 	for (auto i = sommetsDisponibles.begin(); i != sommetsDisponibles.end(); i++) {
@@ -153,46 +153,20 @@ void Graphe::plusCourtChemin(Sommet* sommetDepart, Sommet* sommetDestination, Ve
 		}
 	}
 
-	afficherTrajet(extraireTrajet(sommetsEtPoids, sommetDepart, sommetDestination));
 	pair<Sommet*, pair<int, Sommet*>> poidsFinal = sommetsEtPoids[trouverPositionSommet(sommetsEtPoids, sommetDestination->getIdentifiant())];
-	cout << "Distance parcourue : " << poidsFinal.second.first << "km" << endl;
-	return;
-	/*vector<Trajet> result;
-	vector<pair<Sommet*, int>> voisinsDuDepart = sommetDepart->getVoisinsPossibles(vehicule.getAutonomieActuelle());
-	for (auto i = voisinsDuDepart.begin(); i != voisinsDuDepart.end(); i++) {
-		int autonomieRestante = vehicule.getAutonomieActuelle() - (*i).second;
-		if ((*i).first->getIdentifiant() == sommetDestination->getIdentifiant()) {
-			Trajet trajet;
-			trajet.ajouterSommet((*i).first, (*i).second);
-			result.push_back(trajet);
-		}
-		else if ((*i).first->getVoisinsPossibles(autonomieRestante).size() > 0) {
-			//TODO: Dig continuellement tous les niveaux
-			vector<pair<Sommet*, int>> voisinsDuNiveau = (*i).first->getVoisinsPossibles(autonomieRestante);
-			for (auto j = voisinsDuNiveau.begin(); j != voisinsDuNiveau.end(); j++) {
-				int autonomieRestante2 = autonomieRestante - (*j).second;
-				if ((*j).first->getIdentifiant() == sommetDestination->getIdentifiant()) {
-					Trajet trajet;
-					trajet.ajouterSommet((*j).first, (*j).second);
-					result.push_back(trajet);
-				}
-			}
-		}
-
+	if (poidsFinal.second.first < numeric_limits<int>::max()) {
+		vector<Sommet*> trajet = extraireTrajet(sommetsEtPoids, sommetDepart, sommetDestination);
+		afficherTrajet(trajet);
+		vehicule.setAutonomieActuelle(calculerAutonomieRestante(vehicule, sommetsEtPoids, sommetDepart, sommetDestination));
+		cout << "Distance parcourue : " << poidsFinal.second.first << "km" << endl;
+		cout << "Autonomie restante : " << vehicule.getAutonomieActuelle() << "km" << endl;
+	}
+	else {
+		cerr << "Il n'existe pas de chemin entre les sommets " << sommetDepart->getIdentifiant() 
+			<< " et " << sommetDestination->getIdentifiant() << endl;
 	}
 
-	for (auto i = result.begin(); i != result.end(); i++) {
-		vector<Sommet*> sommets = (*i).getSommets();
-		string listeDeSommets = "";
-		bool isFirst = true;
-		for (auto j = sommets.begin(); j != sommets.end(); j++) {
-			if (!isFirst)
-				listeDeSommets += ", ";
-			listeDeSommets = (*j)->getIdentifiant();
-		}
-		cout << "Trajet : " << listeDeSommets << ". Distance : " << (*i).getDistance() << endl;
-	}
-	*/
+	creerGraphe(fileName_, false);
 }
 
 int Graphe::positionDuPlusPetitSommetEncoreDisponible(vector<Sommet*>& disponibles, vector<pair<Sommet*, pair<int, Sommet*>>>& vecteur) const {
@@ -236,19 +210,20 @@ Sommet* Graphe::trouverSommet(string identifiant) const {
 
 vector<Sommet*> Graphe::extraireTrajet(vector<pair<Sommet*, pair<int, Sommet*>>>& vecteur, Sommet* sommetDepart, Sommet* sommetDestination) const {
 	bool sommetDepartTrouve = false;
-	Sommet* sommet = sommetDestination;
+	Sommet* sommet = sommetDestination; //on part de la destination jusqu'au départ
 	vector<Sommet*> trajet;
 	do {
+		//on part du sommet de destination et on retrace le trajet
 		trajet.push_back(sommet);
 		if (sommet->getIdentifiant() == sommetDepart->getIdentifiant())
 			sommetDepartTrouve = true;
 		else {
-			pair<Sommet*, pair<int, Sommet*>> element = vecteur[trouverPositionSommet(vecteur, sommet->getIdentifiant())];
-			sommet = element.second.second;
+			pair<Sommet*, pair<int, Sommet*>> current = vecteur[trouverPositionSommet(vecteur, sommet->getIdentifiant())];
+			sommet = current.second.second; //on va chercher l'élément précédent au current
 		}		
 	} while (!sommetDepartTrouve);
 	
-	reverse(trajet.begin(), trajet.end());
+	reverse(trajet.begin(), trajet.end()); //on a extrait la liste à l'envers
 
 	return trajet;
 }
@@ -258,10 +233,33 @@ void Graphe::afficherTrajet(vector<Sommet*>& vecteur) const {
 	string trajet = "";
 	bool isFirst = true;
 	for (auto i = vecteur.begin(); i != vecteur.end(); i++) {
+		//on affiche chaque sommet 
 		if (!isFirst)
 			trajet += ", ";
 		trajet += (*i)->getIdentifiant();
 		 isFirst = false;
 	}
 	cout << trajet << endl;
+}
+
+int Graphe::calculerAutonomieRestante(const Vehicule& vehicule, vector<pair<Sommet*, pair<int, Sommet*>>>& vecteur, Sommet* sommetDepart, Sommet* sommetDestination) const {
+	int autonomieDepart = vehicule.getAutonomieActuelle();
+	int distanceTotale = vecteur[trouverPositionSommet(vecteur, sommetDestination->getIdentifiant())].second.first;
+	bool sommetDepartTrouve = false;
+	Sommet* sommet = sommetDestination; //on part de la destination jusqu'au départ
+	do {
+		if (sommet->getIdentifiant() == sommetDepart->getIdentifiant())
+			sommetDepartTrouve = true;
+		else {
+			pair<Sommet*, pair<int, Sommet*>> current = vecteur[trouverPositionSommet(vecteur, sommet->getIdentifiant())];
+			if (current.first->peutRecharger(vehicule.getCarburant())) { 
+				//on a trouvé le point de recharge le plus proche de la destination (où le véhicule a fait le plein la dernière fois)
+				return vehicule.getAutonomieMax() - (distanceTotale - current.second.first);
+			}
+			else {
+				sommet = current.second.second; //on va chercher l'élément précédent au current
+			}
+		}
+	} while (!sommetDepartTrouve);
+	return autonomieDepart - distanceTotale;
 }

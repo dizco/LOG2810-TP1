@@ -21,9 +21,6 @@
     <ClCompile Include="Graphe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Arc.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Sommet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -39,9 +36,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Sommet.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Arc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Vehicule.h">

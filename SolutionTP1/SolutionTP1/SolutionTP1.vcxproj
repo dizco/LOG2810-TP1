@@ -142,7 +142,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Arc.cpp" />
     <ClCompile Include="Graphe.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Sommet.cpp" />
@@ -150,7 +149,6 @@
     <ClCompile Include="Vehicule.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Arc.h" />
     <ClInclude Include="Graphe.h" />
     <ClInclude Include="Sommet.h" />
     <ClInclude Include="Trajet.h" />
