@@ -29,6 +29,10 @@ string Vehicule::getCarburant() const {
 	return carburant_;
 }
 
+void Vehicule::recharger() {
+	autonomieActuelle_ = autonomieMax_;
+}
+
 ostream& operator<< (ostream& stream, const Vehicule& vehicule) {
 	stream << "Carburant : " << vehicule.carburant_
 		<< ". Autonomie actuelle : " << vehicule.autonomieActuelle_

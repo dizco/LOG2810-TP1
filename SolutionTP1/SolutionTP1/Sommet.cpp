@@ -37,6 +37,12 @@ string Sommet::printVoisins() const {
 	return result += ")";
 }
 
+bool Sommet::peutRecharger(string type) const {
+	return ((carburant_ == "essence" && (type == "essence" || type == "hybrid"))
+		|| (carburant_ == "hybrid" && (type == "essence" || type == "hybride" || type == "electrique"))
+		|| (carburant_ == "electrique" && (type == "hybride" || type == "electrique")));
+}
+
 vector<pair<Sommet*, int>> Sommet::getVoisins() const {
 	return voisins_;
 }

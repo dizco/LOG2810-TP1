@@ -2,6 +2,8 @@
 
 #include <string>
 
+//#include "Sommet.h"
+
 using namespace std;
 
 class Vehicule
@@ -17,6 +19,8 @@ public:
 	int getAutonomieActuelle() const;
 	int getAutonomieMax() const;
 	string getCarburant() const;
+
+	void recharger();
 
 	friend ostream& operator<< (ostream& stream, const Vehicule& vehicule);
 

@@ -6,7 +6,7 @@
 
 using namespace std;
 
-enum OptionsDisponibles { Invalide, CaracteristiquesVehicule, MettreAJourCarte, DeterminerChemin, Quitter };
+enum OptionsDisponibles { Invalide, CaracteristiquesVehicule, MettreAJourCarte, DeterminerChemin, Quitter, Testing, AutomaticTests };
 void afficherMenu();
 OptionsDisponibles lireOptionChoisie();
 Vehicule demanderCaracteristiquesDuVehicule();
@@ -38,6 +38,23 @@ int main()
 			case DeterminerChemin: //c
 				executerPlusCourtChemin(graphe, vehicule);
 				break;
+			case Testing:
+				vehicule = Vehicule();
+				vehicule.setCarburant("essence");
+				vehicule.setAutonomieMax(400);
+				vehicule.setAutonomieActuelle(100);
+
+				graphe.creerGraphe("graphe1.txt");
+				executerPlusCourtChemin(graphe, vehicule);
+				break;
+			case AutomaticTests:
+				vehicule = Vehicule();
+				vehicule.setCarburant("essence");
+				vehicule.setAutonomieMax(400);
+				vehicule.setAutonomieActuelle(100);
+
+				graphe.creerGraphe("graphe1.txt");
+				break;
 		}
 	} while (option != Quitter);
 
@@ -56,9 +73,10 @@ OptionsDisponibles lireOptionChoisie() {
 	cin >> optionChoisie;
 
 	//TODO: prendre (a) comme paramètre plutot que a
-	if (optionChoisie.length() != 1 || !(optionChoisie[0] >= 'a' && optionChoisie[0] <= 'd')) {
+	//TODO: Enlever option testing
+	/*if (optionChoisie.length() != 1 || !(optionChoisie[0] >= 'a' && optionChoisie[0] <= 'd')) {
 		return OptionsDisponibles::Invalide;
-	}
+	}*/
 	char lettre = optionChoisie[0];
 	if (lettre == 'a') {
 		return OptionsDisponibles::CaracteristiquesVehicule;
@@ -71,6 +89,12 @@ OptionsDisponibles lireOptionChoisie() {
 	}
 	else if (lettre == 'd') {
 		return OptionsDisponibles::Quitter;
+	}
+	else if (lettre == 't') {
+		return OptionsDisponibles::Testing;
+	}
+	else if (lettre == 'w') {
+		return OptionsDisponibles::AutomaticTests;
 	}
 }
 
@@ -131,7 +155,7 @@ void executerPlusCourtChemin(Graphe& graphe, Vehicule& vehicule) {
 	cout << "Identifiant du sommet de depart : ";
 	cin >> idSommetDepart;
 	string idSommetDestination = "";
-	cout << endl << "Identifiant du sommet de destination : ";
+	cout << "Identifiant du sommet de destination : ";
 	cin >> idSommetDestination;
 
 	Sommet* sommetDepart;
@@ -144,5 +168,19 @@ void executerPlusCourtChemin(Graphe& graphe, Vehicule& vehicule) {
 	}
 	catch (const invalid_argument& e) {
 		cout << "Ce sommet n'existe pas. Veuillez reessayer." << endl;
+	}
+}
+
+void testerPlusCourtChemin(Graphe& graphe, Vehicule& vehicule, string depart, string destination) {
+	Sommet* sommetDepart;
+	Sommet* sommetDestination;
+	try {
+		sommetDepart = graphe.trouverSommet(depart);
+		sommetDestination = graphe.trouverSommet(destination);
+
+		graphe.plusCourtChemin(sommetDepart, sommetDestination, vehicule);
+	}
+	catch (const exception& e) {
+		cout << "Exception : " << e.what() << endl;
 	}
 }

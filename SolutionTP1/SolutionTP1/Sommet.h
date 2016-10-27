@@ -17,6 +17,7 @@ public:
 	string getType() const;
 	void addVoisin(Sommet* sommetVoisin, int distance);
 	string printVoisins() const;
+	bool peutRecharger(string type) const;
 
 	vector<pair<Sommet*, int>> getVoisins() const;
 	vector<pair<Sommet*, int>> getVoisinsPossibles(int distance) const;
