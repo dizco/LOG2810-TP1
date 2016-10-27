@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.1.1">
+  <zoom_level>7</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>609</x>
+      <y>378</y>
+      <w>217</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>Main
+--
++ main()
++ afficherMenu()
++ executerPlusCourtChemin()
++ lireOptionChoisie()
+--
+* demanderCaracteristiquesDuVehicule(): Vehicule
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>343</x>
+      <y>385</y>
+      <w>147</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>Vehicule
+--
+- setAutonomieActuelle: int
+- setAutonomieMax: int
+- setCarburant:string
+- getAutonomieActuelle: int
+- getAutonomieMax: int
+- getCarburant: string</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>483</x>
+      <y>427</y>
+      <w>140</w>
+      <h>21</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>180.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>791</x>
+      <y>560</y>
+      <w>147</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>Trajet
+--
++ ajouterSommet()
++ getSommets: const
++ getDistance: const</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>504</x>
+      <y>560</y>
+      <w>175</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>Graphe
+--
++ creerGraphe()
++ lireGraphe()
++ extractionGraphe()
++ plusCourtChemin()
++ trouverSommet()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>392</x>
+      <y>721</y>
+      <w>147</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>Sommet
+--
++ getIdentifiant()
++ getType()
++ addVoisin()
++ printVoisin()
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>623</x>
+      <y>721</y>
+      <w>147</w>
+      <h>49</h>
+    </coordinates>
+    <panel_attributes>Arc
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>714</x>
+      <y>476</y>
+      <w>161</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;210.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>581</x>
+      <y>476</y>
+      <w>154</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>200.0;10.0;10.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>462</x>
+      <y>637</y>
+      <w>133</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>170.0;10.0;10.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>574</x>
+      <y>637</y>
+      <w>133</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;170.0;120.0</additional_attributes>
+  </element>
+</diagram>

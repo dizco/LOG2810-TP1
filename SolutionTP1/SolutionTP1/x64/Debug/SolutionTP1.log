@@ -1,0 +1,2 @@
+﻿  Main.cpp
+c:\users\frédéric\documents\#école\#université\polytechnique\#session 04-automne 2016\log2810-structures discrètes\tp\log2810\solutiontp1\solutiontp1\main.cpp(123): error C3867: 'Vehicule::getAutonomieMax': non-standard syntax; use '&' to create a pointer to member

@@ -126,8 +126,11 @@ Vehicule demanderCaracteristiquesDuVehicule() {
 			autonomieMaxValide = true;
 			vehicule.setAutonomieMax(autonomieMax);
 		}
-		else {
+		else if(autonomieMax<0) {
 			cout << "L'autonomie du vehicule doit etre superieure a 0" << endl;
+		}
+		else {
+			cout << "L'autonomie du véhicule doit etre inférieure à 999 999 km" << endl;
 		}
 	}
 
@@ -141,7 +144,7 @@ Vehicule demanderCaracteristiquesDuVehicule() {
 			vehicule.setAutonomieActuelle(autonomieRestante);
 		}
 		else {
-			cout << "L'autonomie restante du vehicule doit etre superieure a 0, et inferieure ou egale a l'autonomie maximale." << endl;
+			cout << "L'autonomie restante du vehicule doit etre superieure a 0, et inferieure ou egale a l'autonomie maximale. "<< endl;
 		}
 	}
 
