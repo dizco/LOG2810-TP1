@@ -27,9 +27,6 @@
     <ClCompile Include="Vehicule.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Trajet.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Graphe.h">
@@ -39,9 +36,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Vehicule.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Trajet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

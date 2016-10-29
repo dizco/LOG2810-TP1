@@ -4,8 +4,6 @@
 
 #include "Sommet.h"
 #include "Vehicule.h"
-#include "Trajet.h"
-//#include "Arc.h"
 
 using namespace std;
 
@@ -14,12 +12,15 @@ class Graphe
 public:
 	Graphe();
 	~Graphe();
+	void detruireSommets();
 
 	void creerGraphe(string fileName, bool afficher);
 	void lireGraphe();
 	vector<Sommet*> extractionGraphe(Sommet* sommetDepart, const Vehicule& vehicule) const;
 	void plusCourtChemin(Sommet* sommetDepart, Sommet* sommetDestination, Vehicule& vehicule);
 	Sommet* trouverSommet(string identifiant) const;
+
+	bool informationsEnregistrees() const;
 
 private:
 	string fileName_;

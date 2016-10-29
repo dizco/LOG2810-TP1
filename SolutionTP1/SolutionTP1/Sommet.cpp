@@ -5,7 +5,7 @@ Sommet::Sommet()
 }
 
 Sommet::Sommet(string identifiant, string type)
-	: identifiant_(identifiant), carburant_(type)
+	: identifiant_(identifiant), carburant_(type)//, voisinsPossiblesExtraits_(false)
 {
 }
 
@@ -43,12 +43,27 @@ bool Sommet::peutRecharger(string type) const {
 		|| (carburant_ == "electrique" && (type == "hybride" || type == "electrique")));
 }
 
+/*void Sommet::setVoisinsPossiblesExtraits(const bool valeur) {
+	voisinsPossiblesExtraits_ = valeur;
+}
+bool Sommet::voisinsPossiblesExtraits() const {
+	return false;
+}*/
+
 void Sommet::setVoisins(const vector<pair<Sommet*, int>>& vecteur) {
 	voisins_ = vecteur;
 }
 
 vector<pair<Sommet*, int>> Sommet::getVoisins() const {
 	return voisins_;
+}
+
+vector<Sommet*> Sommet::getVoisinsSansDistance() const {
+	vector<Sommet*> resultat;
+	for (auto i = voisins_.begin(); i != voisins_.end(); i++) {
+		resultat.push_back((*i).first);
+	}
+	return resultat;
 }
 
 vector<pair<Sommet*, int>> Sommet::getVoisinsPossibles(int distance) const {
@@ -58,6 +73,5 @@ vector<pair<Sommet*, int>> Sommet::getVoisinsPossibles(int distance) const {
 			voisinsDisponibles.push_back(*i);
 		}
 	}
-
 	return voisinsDisponibles;
 }

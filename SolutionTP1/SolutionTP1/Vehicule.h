@@ -21,6 +21,7 @@ public:
 	string getCarburant() const;
 
 	void recharger();
+	bool informationsEnregistrees() const;
 
 	friend ostream& operator<< (ostream& stream, const Vehicule& vehicule);
 

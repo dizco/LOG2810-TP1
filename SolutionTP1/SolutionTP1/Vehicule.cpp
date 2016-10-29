@@ -33,6 +33,10 @@ void Vehicule::recharger() {
 	autonomieActuelle_ = autonomieMax_;
 }
 
+bool Vehicule::informationsEnregistrees() const {
+	return !(autonomieActuelle_ > autonomieMax_ || autonomieMax_ == 0 || carburant_ == "");
+}
+
 ostream& operator<< (ostream& stream, const Vehicule& vehicule) {
 	stream << "Carburant : " << vehicule.carburant_
 		<< ". Autonomie actuelle : " << vehicule.autonomieActuelle_

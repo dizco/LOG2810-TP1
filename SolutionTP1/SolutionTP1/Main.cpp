@@ -6,7 +6,7 @@
 
 using namespace std;
 
-enum OptionsDisponibles { Invalide, CaracteristiquesVehicule, MettreAJourCarte, DeterminerChemin, Quitter, Testing, AutomaticTests };
+enum OptionsDisponibles { Invalide, CaracteristiquesVehicule, MettreAJourCarte, DeterminerChemin, Quitter };
 void afficherMenu();
 OptionsDisponibles lireOptionChoisie();
 Vehicule demanderCaracteristiquesDuVehicule();
@@ -22,12 +22,12 @@ int main()
 		option = lireOptionChoisie();
 		switch (option) {
 			case Invalide:
-				cout << "Option invalide. Veuillez reessayer." << endl;
+				cout << "Option invalide. Veuillez reessayer. Assurez-vous d'inscrire l'option sous le format \"(x)\"." << endl;
 				break;
-			case CaracteristiquesVehicule: //a
+			case CaracteristiquesVehicule: //(a)
 				vehicule = demanderCaracteristiquesDuVehicule();
 				break;
-			case MettreAJourCarte: //b
+			case MettreAJourCarte: //(b)
 			{
 				string fileName = "";
 				cout << "Entrez le nom du nouveau fichier : ";
@@ -35,25 +35,8 @@ int main()
 				graphe.creerGraphe(fileName, true);
 			}
 			break;
-			case DeterminerChemin: //c
+			case DeterminerChemin: //(c)
 				executerPlusCourtChemin(graphe, vehicule);
-				break;
-			case Testing:
-				vehicule = Vehicule();
-				vehicule.setCarburant("essence");
-				vehicule.setAutonomieMax(5);
-				vehicule.setAutonomieActuelle(5);
-
-				graphe.creerGraphe("graphe1.txt", true);
-				executerPlusCourtChemin(graphe, vehicule);
-				break;
-			case AutomaticTests:
-				vehicule = Vehicule();
-				vehicule.setCarburant("essence");
-				vehicule.setAutonomieMax(20);
-				vehicule.setAutonomieActuelle(2);
-
-				graphe.creerGraphe("graphe1.txt", true);
 				break;
 		}
 	} while (option != Quitter);
@@ -69,15 +52,13 @@ void afficherMenu() {
 }
 
 OptionsDisponibles lireOptionChoisie() {
-	std::string optionChoisie = "";
+	string optionChoisie = "";
 	cin >> optionChoisie;
 
-	//TODO: prendre (a) comme paramètre plutot que a
-	//TODO: Enlever option testing
-	/*if (optionChoisie.length() != 1 || !(optionChoisie[0] >= 'a' && optionChoisie[0] <= 'd')) {
+	if (optionChoisie.length() != 3 || !(optionChoisie[1] >= 'a' && optionChoisie[1] <= 'd')) {
 		return OptionsDisponibles::Invalide;
-	}*/
-	char lettre = optionChoisie[0];
+	}
+	char lettre = optionChoisie[1];
 	if (lettre == 'a') {
 		return OptionsDisponibles::CaracteristiquesVehicule;
 	}
@@ -90,19 +71,13 @@ OptionsDisponibles lireOptionChoisie() {
 	else if (lettre == 'd') {
 		return OptionsDisponibles::Quitter;
 	}
-	else if (lettre == 't') {
-		return OptionsDisponibles::Testing;
-	}
-	else if (lettre == 'w') {
-		return OptionsDisponibles::AutomaticTests;
-	}
 }
 
+/*
+Demande les caracteristiques du vehicule et les enregistre.
+*/
 Vehicule demanderCaracteristiquesDuVehicule() {
 	Vehicule vehicule;
-
-	//cout << "Choisir caractéristiques du véhicule." << endl;
-
 	bool energieValide = false;
 	while (!energieValide) {
 		string typeEnergie = "";
@@ -113,7 +88,7 @@ Vehicule demanderCaracteristiquesDuVehicule() {
 			vehicule.setCarburant(typeEnergie);
 		}
 		else {
-			cout << "Vous devez entrer des valeurs valides. Les types d'energie acceptees sont: electrique, hybride ou essence" << endl;
+			cout << "Vous devez entrer des valeurs valides. Les types d'energie acceptees sont: electrique, hybride ou essence." << endl;
 		}
 	}
 
@@ -127,7 +102,7 @@ Vehicule demanderCaracteristiquesDuVehicule() {
 			vehicule.setAutonomieMax(autonomieMax);
 		}
 		else {
-			cout << "L'autonomie du vehicule doit etre superieure a 0" << endl;
+			cout << "L'autonomie du vehicule doit etre superieure a 0 et inferieure a 100000." << endl;
 		}
 	}
 
@@ -150,7 +125,19 @@ Vehicule demanderCaracteristiquesDuVehicule() {
 	return vehicule;
 }
 
+/*
+Demande les informations de départ et de destination puis effectue l'algorithme.
+*/
 void executerPlusCourtChemin(Graphe& graphe, Vehicule& vehicule) {
+	if (!vehicule.informationsEnregistrees()) {
+		cout << "Veuillez entrer les informations du vehicule avant d'executer le plus court chemin." << endl;
+		return;
+	}
+	if (!graphe.informationsEnregistrees()) {
+		cout << "Veuillez entrer un graphe avant d'executer le plus court chemin." << endl;
+		return;
+	}
+
 	string idSommetDepart = "";
 	cout << "Identifiant du sommet de depart : ";
 	cin >> idSommetDepart;
@@ -168,19 +155,5 @@ void executerPlusCourtChemin(Graphe& graphe, Vehicule& vehicule) {
 	}
 	catch (const invalid_argument& e) {
 		cout << "Ce sommet n'existe pas. Veuillez reessayer." << endl;
-	}
-}
-
-void testerPlusCourtChemin(Graphe& graphe, Vehicule& vehicule, string depart, string destination) {
-	Sommet* sommetDepart;
-	Sommet* sommetDestination;
-	try {
-		sommetDepart = graphe.trouverSommet(depart);
-		sommetDestination = graphe.trouverSommet(destination);
-
-		graphe.plusCourtChemin(sommetDepart, sommetDestination, vehicule);
-	}
-	catch (const exception& e) {
-		cout << "Exception : " << e.what() << endl;
 	}
 }

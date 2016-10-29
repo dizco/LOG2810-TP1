@@ -19,14 +19,19 @@ public:
 	string printVoisins() const;
 	bool peutRecharger(string type) const;
 
+	/*void setVoisinsPossiblesExtraits(const bool valeur);
+	bool voisinsPossiblesExtraits() const;*/
+
 	void setVoisins(const vector<pair<Sommet*, int>>& vecteur);
 	vector<pair<Sommet*, int>> getVoisins() const;
+	vector<Sommet*> getVoisinsSansDistance() const;
 	vector<pair<Sommet*, int>> getVoisinsPossibles(int distance) const;
 
 private:
 	vector<pair<Sommet*,int>> voisins_;
 	string identifiant_;
 	string carburant_;
+	//bool voisinsPossiblesExtraits_;
 
 };
 
